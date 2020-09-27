@@ -1,0 +1,71 @@
+---
+
+- name: define OS related monitoring plugins (debian)
+  set_fact:
+    monitoring_plugins: "{{ monitoring_plugins_debian }}"
+  when:
+    - ansible_os_family | lower == 'debian'
+    - not monitoring_plugins is defined
+    - monitoring_plugins_debian is defined
+
+- name: define OS related monitoring plugins (redhat)
+  set_fact:
+    monitoring_plugins: "{{ monitoring_plugins_redhat }}"
+  when:
+    - ansible_os_family | lower == 'redhat'
+    - not monitoring_plugins is defined
+    - monitoring_plugins_redhat is defined
+
+- name: install monitoring plugins
+  package:
+    name: "{{ monitoring_plugins }}"
+    state: present
+
+
+- name: ensure plugins directory exists
+  file:
+    dest: "{{ monitoring_plugins_directory }}"
+    state: directory
+    mode: 0755
+
+- name: create generic link for {{ monitoring_plugins_directory }}
+  file:
+    src: "{{ monitoring_plugins_directory }}"
+    dest: /usr/lib/monitoring-plugins
+    state: link
+  when: ansible_os_family | lower != 'archlinux'
+
+- name: copy extra check plugins
+  copy:
+    src: plugins/{{ item }}
+    dest: "{{ monitoring_plugins_directory }}"
+    mode: 0755
+  loop:
+    "{{ monitoring_plugins_extra }}"
+
+- name: download extra plugins
+  get_url:
+    url: "{{ item.url }}"
+    dest: "{{ monitoring_plugins_directory }}/{{ item.dest }}"
+    mode: 0755
+    checksum: "{{ item.checksum | default(omit) }}"
+    validate_certs: "{{ item.validate | default(true) }}"
+  with_items:
+    "{{ monitoring_plugins_download }}"
+  when: monitoring_plugins_download is defined and monitoring_plugins_download != []
+
+#
+# - name: install extra plugins dependency
+#   pip:
+#     name: "{{ item.dependencies.pip }}"
+# #    dest: '{{ monitoring_plugins_directory }}/{{ item.dest }}'
+# #    mode: '0755'
+# #    checksum: '{{ item.checksum }}'
+# #    validate_certs: '{{ item.validate | default(true) }}'
+#   with_items:
+#     "{{ icinga2_plugins_download }}"
+#   when: (
+#     icinga2_plugins_download is defined and icinga2_plugins_download != [] and
+#     icinga2_plugins_download.dependencies is defined and
+#     icinga2_plugins_download.dependencies.pip is defined )
+#     # icinga2_plugins_download.dependencies.pip != [] )

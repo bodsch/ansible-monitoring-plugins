@@ -1,0 +1,43 @@
+---
+
+monitoring_plugins_debian:
+  - monitoring-plugins-standard
+  - monitoring-plugins-basic
+  - monitoring-plugins-common
+
+monitoring_plugins_redhat:
+  - nagios-plugins
+  - nagios-plugins-disk
+  - nagios-plugins-dns
+  - nagios-plugins-file_age
+  - nagios-plugins-fping
+  - nagios-plugins-http
+  - nagios-plugins-icmp
+  - nagios-plugins-ldap
+  - nagios-plugins-load
+  - nagios-plugins-mailq
+  - nagios-plugins-mysql
+  - nagios-plugins-ntp
+  - nagios-plugins-ping
+  - nagios-plugins-procs
+  - nagios-plugins-sensors
+  - nagios-plugins-smtp
+  - nagios-plugins-snmp
+  - nagios-plugins-ssh
+  - nagios-plugins-swap
+  - nagios-plugins-tcp
+  - nagios-plugins-time
+  - nagios-plugins-uptime
+  - nagios-plugins-users
+
+monitoring_plugins: []
+
+monitoring_plugins_extra:
+  - restart_service
+  - check_hostname
+  - check_diskstat.sh
+  - check_uptime.sh
+  - check_mem
+  - check_requiered_reboot.sh
+
+monitoring_plugins_download: []
