@@ -17,4 +17,4 @@
 
 
   roles:
-    - role: ansible-monitoring-plugins
+    - role: bodsch.monitoring-plugins
