@@ -22,7 +22,8 @@ galaxy_info:
         - 8
 
   galaxy_tags:
+    - infrastructure
     - monitoring
-    - monitoring-plugins
-    - nagios-plugins
+    - plugins
+    - nagios
     - nrpe
