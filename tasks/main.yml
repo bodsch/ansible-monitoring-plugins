@@ -1,26 +1,23 @@
 ---
 
-- name: define OS related monitoring plugins (debian)
-  set_fact:
-    monitoring_plugins: "{{ monitoring_plugins_debian }}"
+- block:
+    - name: define OS related monitoring plugins (debian)
+      set_fact:
+        monitoring_plugins: "{{ monitoring_plugins_debian + monitoring_plugins | default([]) }}"
   when:
     - ansible_os_family | lower == 'debian'
-    - not monitoring_plugins is defined
-    - monitoring_plugins_debian is defined
 
-- name: define OS related monitoring plugins (redhat)
-  set_fact:
-    monitoring_plugins: "{{ monitoring_plugins_redhat }}"
+- block:
+    - name: define OS related monitoring plugins (redhat)
+      set_fact:
+        monitoring_plugins: "{{ monitoring_plugins_redhat + monitoring_plugins | default([]) }}"
   when:
     - ansible_os_family | lower == 'redhat'
-    - not monitoring_plugins is defined
-    - monitoring_plugins_redhat is defined
 
 - name: install monitoring plugins
   package:
     name: "{{ monitoring_plugins }}"
     state: present
-
 
 - name: ensure plugins directory exists
   file:
