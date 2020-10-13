@@ -32,6 +32,8 @@ monitoring_plugins_redhat:
 
 monitoring_plugins: []
 
+monitoring_plugins_blacklist: []
+
 monitoring_plugins_extra:
   - restart_service
   - check_hostname
