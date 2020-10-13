@@ -15,6 +15,8 @@
         dest: 'check_arch_updates'
         checksum: 'sha256:7afa562aaedb63f6e93cfebfa4a9a3ea49fecda62d4dae3d8ff919b76c117c41'
 
+    monitoring_plugins_blacklist:
+     - nagios-plugins-mysql
 
   roles:
     - role: bodsch.monitoring-plugins

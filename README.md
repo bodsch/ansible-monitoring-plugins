@@ -41,6 +41,19 @@ monitoring_plugins_redhat:
   - nagios-plugins-users
 ```
 
+### monitoring_plugins_blacklist
+
+remove blugins from list.
+
+`nagios-plugins-mysql` and MariaDB from epel are not compatible in CentoOS 8. (see https://github.com/Icinga/icinga2/issues/7927)
+
+Here you can remove modules from the site if necessary. 
+
+```
+monitoring_plugins_blacklist:
+  - nagios-plugins-mysql
+```
+
 ### extra plugins
 
 ```
