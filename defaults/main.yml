@@ -38,6 +38,6 @@ monitoring_plugins_extra:
   - check_diskstat.sh
   - check_uptime.sh
   - check_mem
-  - check_requiered_reboot.sh
+  - check_required_reboot.sh
 
 monitoring_plugins_download: []
