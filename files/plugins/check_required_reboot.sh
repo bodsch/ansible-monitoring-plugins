@@ -28,4 +28,6 @@ if [ ! "${FIND}" = "" ]; then
   fi
 fi
 
+echo "current kernel: '${CURRENT_KERNEL}'"
+
 exit "${E_OK}"
