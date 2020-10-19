@@ -1,0 +1,5 @@
+molecule~=3.0
+docker
+ansible-lint
+testinfra>=1.7.0
+flake8
