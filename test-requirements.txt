@@ -1,4 +1,4 @@
-molecule~=3.0
+molecule==3.0.8
 docker
 ansible-lint
 testinfra>=1.7.0
