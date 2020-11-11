@@ -83,19 +83,3 @@
   with_items:
     "{{ monitoring_plugins_download }}"
   when: monitoring_plugins_download is defined and monitoring_plugins_download != []
-
-#
-# - name: install extra plugins dependency
-#   pip:
-#     name: "{{ item.dependencies.pip }}"
-# #    dest: '{{ monitoring_plugins_directory }}/{{ item.dest }}'
-# #    mode: '0755'
-# #    checksum: '{{ item.checksum }}'
-# #    validate_certs: '{{ item.validate | default(true) }}'
-#   with_items:
-#     "{{ icinga2_plugins_download }}"
-#   when: (
-#     icinga2_plugins_download is defined and icinga2_plugins_download != [] and
-#     icinga2_plugins_download.dependencies is defined and
-#     icinga2_plugins_download.dependencies.pip is defined )
-#     # icinga2_plugins_download.dependencies.pip != [] )

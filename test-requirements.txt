@@ -1,6 +1,10 @@
-molecule==3.1.3
-molecule-docker==0.2.4
+molecule
+molecule-docker
 docker
 ansible-lint
-testinfra>=5.3.1
+yamllint
+testinfra
 flake8
+pytest
+tox
+# jmespath

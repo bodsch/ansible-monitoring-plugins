@@ -9,7 +9,7 @@ lint: |
   set -e
   yamllint .
   ansible-lint .
-  flake8
+  flake8 .
 
 platforms:
   - name: instance
@@ -29,14 +29,19 @@ provisioner:
 
 scenario:
   test_sequence:
-    - lint
+    # - lint
     - destroy
     - dependency
     - syntax
     - create
     - prepare
     - converge
+    - verify
     - destroy
 
 verifier:
   name: testinfra
+#   options:
+#     #v: True
+#     #sudo: True
+#     debug: True
