@@ -45,9 +45,9 @@ def test_installed_packages(host):
     """
 
     """
-    if(host.system_info.distribution == "debian"):
-        package = "monitoring-plugins-common"
-    elif(host.system_info.distribution == "centos"):
+    package = "monitoring-plugins-common"
+
+    if(host.system_info.distribution == "centos" or host.system_info.distribution == "redhat"):
         package = "nagios-plugins"
 
     p = host.package(package)
