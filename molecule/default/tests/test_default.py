@@ -18,9 +18,9 @@ def get_vars(host):
     """
 
     """
-    defaults_files = "file=../../defaults/main.yml name=role_defaults"
-    vars_files     = "file=../../vars/main.yml name=role_vars"
-    test_files     = "file=./group_vars/all/vars.yml name=test_vars"
+    defaults_files = "file=./../defaults/main.yml name=role_defaults"
+    vars_files     = "file=./../vars/main.yml name=role_vars"
+    test_files     = "file=./../molecule/default/group_vars/all/vars.yml name=test_vars"
 
     ansible_vars = host.ansible(
         "include_vars",
@@ -37,7 +37,7 @@ def get_vars(host):
     templar = Templar(loader = DataLoader(), variables = ansible_vars)
     result = templar.template(ansible_vars, fail_on_undefined=False)
 
-#    pprint.pprint(result)
+    # pprint.pprint(result)
     return result
 
 
@@ -61,6 +61,6 @@ def test_blacklisted_packages(host, get_vars):
     """
     blacklist = get_vars.get('monitoring_plugins_blacklist')
 
-    if(len(blacklist) != 0):
+    if(blacklist and len(blacklist) != 0):
         p = host.package(blacklist[0])
         assert not p.is_installed
