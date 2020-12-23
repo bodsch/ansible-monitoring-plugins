@@ -15,10 +15,16 @@ then
   distribution="${ID}"
 fi
 
-if [[ "${distribution}" == "arch" ]]
+if [ "${distribution}" = "arch" ] || [ "${distribution}" = "artix" ]
 then
 
   PACMAN=$(command -v pacman)
+
+  if [ -z ${PACMAN} ]
+  then
+    echo "no 'pacman' command found."
+    exit ${E_CRITICAL}
+  fi
 
   list=$(${PACMAN} --sync --sysupgrade --print 2> /dev/null)
 
@@ -53,7 +59,7 @@ then
   done
 
 else
-  echo "wrong distribution."
+  echo "wrong distribution. (${distribution})"
   exit_code="${E_UNKNOWN}"
 fi
 

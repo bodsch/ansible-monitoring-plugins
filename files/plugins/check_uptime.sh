@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+  #!/usr/bin/env bash
 #
 #
 # USAGE :
@@ -45,7 +45,7 @@ else
   sortie=$(uptime | awk '{print $3}')
 fi
 
-if [ "$(echo ${sortie} | grep "^[[:digit:]]*$")" ]
+if [ "$(echo ${sortie} | grep '^[[:digit:]]*$')" ]
 then
 
   [ -z "${warning}" ]  && WARNING=$((${sortie}+1))  || WARNING=${warning}
@@ -53,11 +53,11 @@ then
 
   if [ "${sortie}" -ge "${CRITICAL}" ]
   then
-    echo "Uptime: $(uptime --pretty) (> ${CRITICAL}) "
+    echo "CRITICAL: you must reboot - Uptime: $(uptime --pretty)"
     exit "${E_CRITICAL}"
-  elif [ "${sortie}" -ge "${CRITICAL}" ]
+  elif [ "${sortie}" -ge "${WARNING}" ]
   then
-    echo "Uptime: $(uptime --pretty) (> ${CRITICAL}) "
+    echo "WARNING: you should reboot - Uptime: $(uptime --pretty)"
     exit "${E_WARNING}"
   elif [ "${sortie}" -lt "${CRITICAL}" ]
   then

@@ -31,8 +31,10 @@ shift $((OPTIND-1))
 
 [[ $warn -gt $critical ]] && thishelp
 
-
-if $(lpstat -r -h $host > /dev/null 2>&1)
+# -r  Show whether the CUPS server is running
+# -s  Show a status summary
+# -s  Show a status summary
+if $(lpstat -r -s -h $host > /dev/null 2>&1)
 then
 
   QUEUE_LENGTH=$(lpstat | wc -l)
@@ -53,6 +55,6 @@ then
   exit 2
 
 else
-  # cups ist not running
+  echo "cups is not running"
   exit 2
 fi

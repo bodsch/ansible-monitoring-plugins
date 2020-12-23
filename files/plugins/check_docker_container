@@ -27,18 +27,37 @@ do
   esac
 done
 
+check_dependency() {
+
+  NC=$(command -v nc)
+  JQ=$(command -v jq)
+
+  if [ -z "${NC}" ]
+  then
+    echo "no 'nc' found. please install openbsd-netcat first"
+    exit ${E_CRITICAL}
+  fi
+
+  if [ -z "${JQ}" ]
+  then
+    echo "no 'jq' found. please install jq first"
+    exit ${E_CRITICAL}
+  fi
+
+}
+
 running_containers() {
+
+  running=0
 
   # Count all running containers
   running_containers=$(echo -e 'GET /containers/json HTTP/1.0\r\n' | nc -U /var/run/docker.sock | tail -n +9)
 
   containers=$(echo "${running_containers}" | jq -r '.[].Names | to_entries[].value')
 
-  if [[ ! -z "${containers}" ]]
+  if [ ! -z "${containers}" ]
   then
     running=$(echo "${containers}" | wc -l)
-  else
-    running=0
   fi
 
   echo "${running} running containers"
@@ -58,7 +77,7 @@ running_containers() {
   # Count all images
   #total_images=$(echo -e "GET /images/json HTTP/1.0\r\n" | nc -U /var/run/docker.sock | tail -n +9)
 
-  if [[ ${running} -lt ${must_running} ]]
+  if [ ${running} -lt ${must_running} ]
   then
     exit ${E_CRITICAL}
   fi
@@ -67,7 +86,7 @@ running_containers() {
 }
 
 run() {
-
+  check_dependency
   running_containers
 }
 

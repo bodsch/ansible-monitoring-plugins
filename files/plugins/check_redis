@@ -16,11 +16,11 @@
 while [[ -n "$1" ]]; do
   case $1 in
     --host | -h)
-      host=$2
+      redis_host=$2
       shift
       ;;
     --port | -p)
-      port=$2
+      redis_port=$2
       shift
       ;;
     --help | -H)
@@ -36,22 +36,38 @@ while [[ -n "$1" ]]; do
   shift
 done
 
-host=${host:=127.0.0.1}
-port=${port:=6379}
+check_dependency() {
 
-output=$(echo 'info' | nc -w1 $host $port)
-if [[ $? -ne 0 ]] || [[ -z  $output ]]; then
-  echo "CRITICAL - could not connect to redis on ${host}:${port}"
-  exit 2
-fi
+  NC=$(command -v nc)
 
-used_memory_human=$(echo "$output" | awk -F ":" '$1 == "used_memory_human" {print $2}'|sed -e 's/\r//')
-instantaneous_ops_per_sec=$(echo "$output" | awk -F : '$1 == "instantaneous_ops_per_sec" {print $2}')
+  if [ -z "${NC}" ]
+  then
+    echo "no 'nc' found. please install openbsd-netcat first"
+    exit ${E_CRITICAL}
+  fi
+}
 
-if [[ -z $used_memory_human ]] || [[ -z  $instantaneous_ops_per_sec ]]; then
-  echo "CRITICAL - could not fetch redis stats on ${host}:${port}"
-  exit 2
-fi
+check_redis() {
+  host=${redis_host:=127.0.0.1}
+  port=${redis_port:=6379}
 
-echo "OK - Redis Memory: ${used_memory_human}, Ops/s: ${instantaneous_ops_per_sec}"
-exit 0
+  output=$(echo 'info' | nc -w1 $redis_host $redis_port)
+  if [[ $? -ne 0 ]] || [[ -z  $output ]]; then
+    echo "CRITICAL - could not connect to redis on ${redis_host}:${redis_port}"
+    exit 2
+  fi
+
+  used_memory_human=$(echo "$output" | awk -F ":" '$1 == "used_memory_human" {print $2}'|sed -e 's/\r//')
+  instantaneous_ops_per_sec=$(echo "$output" | awk -F : '$1 == "instantaneous_ops_per_sec" {print $2}')
+
+  if [[ -z $used_memory_human ]] || [[ -z  $instantaneous_ops_per_sec ]]; then
+    echo "CRITICAL - could not fetch redis stats on ${redis_host}:${redis_port}"
+    exit 2
+  fi
+
+  echo "OK - Redis Memory: ${used_memory_human}, Ops/s: ${instantaneous_ops_per_sec}"
+  exit 0
+}
+
+check_dependency
+check_redis
