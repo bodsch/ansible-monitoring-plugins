@@ -10,20 +10,27 @@ galaxy_info:
   platforms:
     - name: Ubuntu
       versions:
-        - bionic # 18.04
-        - focal  # 20.04
+        # 18.04
+        - bionic
+        # 20.04
+        - focal
     - name: Debian
       versions:
-        - etch   # 9
-        - buster # 10
+        # 9
+        - etch
+        # 10
+        - buster
     - name: EL
       versions:
         - 7
         - 8
+    - name: ArchLinux
 
   galaxy_tags:
+    - system
     - infrastructure
     - monitoring
     - plugins
+    - icinga2
     - nagios
     - nrpe
