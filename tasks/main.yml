@@ -20,13 +20,15 @@
         failovermethod: priority
         gpgcheck: 1
         enabled: 1
+  when:
+    - ansible_os_family | lower == 'redhat'
 
-    # - name: update rpm cache  # noqa 303
-    #   command: yum clean metadata
-    #   args:
-    #     warn: false
-
-  when: ansible_os_family | lower == 'redhat'
+- block:
+    - name: define OS related monitoring plugins (archlinux)
+      set_fact:
+        monitoring_plugins: "{{ monitoring_plugins_arch + monitoring_plugins | default([]) }}"
+  when:
+    - ansible_os_family | lower == 'archlinux'
 
 - block:
     - name: define OS related monitoring plugins (debian)
@@ -45,7 +47,9 @@
 - name: remove blacklisted plugins
   set_fact:
     monitoring_plugins: "{{ monitoring_plugins | difference(monitoring_plugins_blacklist) }}"
-  when: monitoring_plugins_blacklist is defined and monitoring_plugins_blacklist | count != 0
+  when:
+    - monitoring_plugins_blacklist is defined
+    - monitoring_plugins_blacklist | count != 0
 
 - name: install monitoring plugins
   package:
@@ -63,7 +67,8 @@
     src: "{{ monitoring_plugins_directory }}"
     dest: /usr/lib/monitoring-plugins
     state: link
-  when: ansible_os_family | lower != 'archlinux'
+  when:
+    - ansible_os_family | lower != 'archlinux'
 
 - name: copy extra check plugins
   copy:
@@ -82,4 +87,6 @@
     validate_certs: "{{ item.validate | default(true) }}"
   with_items:
     "{{ monitoring_plugins_download }}"
-  when: monitoring_plugins_download is defined and monitoring_plugins_download != []
+  when:
+    - monitoring_plugins_download is defined
+    - monitoring_plugins_download != []

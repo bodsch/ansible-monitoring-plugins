@@ -1,7 +1,13 @@
-# ansible role for monitoring plugins
+
 
 installs an set of `monitoring-` or `nagios-plugins`
 
+## archlinux based
+
+```
+monitoring_plugins_arch:
+  - monitoring-plugins
+```
 
 ## debian based
 
@@ -43,9 +49,9 @@ monitoring_plugins_redhat:
 
 ### remove monitoring plugins from list
 
-`nagios-plugins-mysql` and MariaDB from epel are not compatible in CentoOS 8. (see https://github.com/Icinga/icinga2/issues/7927)
+`nagios-plugins-mysql` and MariaDB from epel are not compatible in CentoOS 8. ([read this issue](https://github.com/Icinga/icinga2/issues/7927))
 
-Here you can remove modules from the site if necessary. 
+If necessary, some of the plugins can be removed from the previously defined list: 
 
 ```
 monitoring_plugins_blacklist:
@@ -53,6 +59,9 @@ monitoring_plugins_blacklist:
 ```
 
 ### extra plugins
+
+This role provides some small monitoring plugins. 
+These are located in the [files](./files) directory:
 
 ```
 monitoring_plugins_extra:
@@ -65,6 +74,8 @@ monitoring_plugins_extra:
 ```
 
 ### download external plugins
+
+To install external plugins from other git repositories, you can use `monitoring_plugins_download`:
 
 ```
 monitoring_plugins_download:

@@ -1,4 +1,6 @@
 ---
+monitoring_plugins_arch:
+  - monitoring-plugins
 
 monitoring_plugins_debian:
   - monitoring-plugins-standard

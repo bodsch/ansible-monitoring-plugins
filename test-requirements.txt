@@ -1,10 +1,12 @@
-molecule==3.1
+molecule
 molecule-docker
+molecule-podman
 docker
 ansible-lint
 yamllint
 flake8
+jmespath
 pytest
 pytest-testinfra
 tox
-# jmespath
+tox-gh-actions
