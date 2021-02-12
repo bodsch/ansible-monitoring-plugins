@@ -1,4 +1,5 @@
 
+![CI](https://github.com/bodsch/ansible-monitoring-plugins/workflows/CI/badge.svg)
 
 installs an set of `monitoring-` or `nagios-plugins`
 
