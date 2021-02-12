@@ -1,4 +1,8 @@
 
+
+installs an set of `monitoring-` or `nagios-plugins` on various systems.
+
+
 [![GitHub Workflow Status](https://img.shields.io/github/workflow/status/bodsch/ansible-monitoring-plugins/CI)][ci]
 [![GitHub issues](https://img.shields.io/github/issues/bodsch/ansible-monitoring-plugins)][issues]
 [![GitHub release (latest by date)](https://img.shields.io/github/v/release/bodsch/ansible-monitoring-plugins)][releases]
@@ -7,16 +11,30 @@
 [issues]: https://github.com/bodsch/ansible-monitoring-plugins/issues?q=is%3Aopen+is%3Aissue
 [releases]: https://github.com/bodsch/ansible-monitoring-plugins/releases
 
-installs an set of `monitoring-` or `nagios-plugins`
+## Requirements & Dependencies
 
-## archlinux based
+not known
+
+### Operating systems
+
+Tested on
+
+* Debian 9 / 10
+* Ubuntu 18.04 / 20.04
+* CentOS 7 / 8
+* OracleLinux 8
+* ArchLinux
+
+## configuration
+
+### archlinux based
 
 ```
 monitoring_plugins_arch:
   - monitoring-plugins
 ```
 
-## debian based
+### debian based
 
 ```
 monitoring_plugins_debian:
@@ -25,7 +43,7 @@ monitoring_plugins_debian:
   - monitoring-plugins-common
 ```
 
-## redhat based
+### redhat based
 
 ```
 monitoring_plugins_redhat:
