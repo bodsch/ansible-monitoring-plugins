@@ -1,5 +1,11 @@
 
-![CI](https://github.com/bodsch/ansible-monitoring-plugins/workflows/CI/badge.svg)
+[![GitHub Workflow Status](https://img.shields.io/github/workflow/status/bodsch/ansible-monitoring-plugins/CI)][ci]
+[![GitHub issues](https://img.shields.io/github/issues/bodsch/ansible-monitoring-plugins)][issues]
+[![GitHub release (latest by date)](https://img.shields.io/github/v/release/bodsch/ansible-monitoring-plugins)][releases]
+
+[ci]: https://github.com/bodsch/ansible-monitoring-plugins/actions
+[issues]: https://github.com/bodsch/ansible-monitoring-plugins/issues?q=is%3Aopen+is%3Aissue
+[releases]: https://github.com/bodsch/ansible-monitoring-plugins/releases
 
 installs an set of `monitoring-` or `nagios-plugins`
 
@@ -52,7 +58,7 @@ monitoring_plugins_redhat:
 
 `nagios-plugins-mysql` and MariaDB from epel are not compatible in CentoOS 8. ([read this issue](https://github.com/Icinga/icinga2/issues/7927))
 
-If necessary, some of the plugins can be removed from the previously defined list: 
+If necessary, some of the plugins can be removed from the previously defined list:
 
 ```
 monitoring_plugins_blacklist:
@@ -61,7 +67,7 @@ monitoring_plugins_blacklist:
 
 ### extra plugins
 
-This role provides some small monitoring plugins. 
+This role provides some small monitoring plugins.
 These are located in the [files](./files) directory:
 
 ```
