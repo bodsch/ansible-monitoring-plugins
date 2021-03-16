@@ -2,6 +2,8 @@
 
 galaxy_info:
   role_name: monitoring_plugins
+  namespace: bodsch
+
   author: Bodo Schulz
   description: ansible role for handling monitoring-plugins
   license: Apache
