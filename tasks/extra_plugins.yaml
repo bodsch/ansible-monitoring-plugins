@@ -1,0 +1,28 @@
+---
+
+- name: copy extra check plugins
+  copy:
+    src: "plugins/{{ item }}"
+    dest: "{{ monitoring_plugins_directory }}"
+    mode: 0755
+  loop:
+    "{{ monitoring_plugins_extra }}"
+  loop_control:
+    label: "{{ item }}"
+
+- name: download extra plugins
+  get_url:
+    url: "{{ item.url }}"
+    dest: "{{ monitoring_plugins_directory }}/{{ item.dest }}"
+    mode: 0755
+    checksum: "{{ item.checksum | default(omit) }}"
+    validate_certs: "{{ item.validate | default(true) }}"
+  loop:
+    "{{ monitoring_plugins_download }}"
+  loop_control:
+    label: "{{ item.dest }}"
+  when:
+    - monitoring_plugins_download is defined
+    - monitoring_plugins_download != []
+
+...

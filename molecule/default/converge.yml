@@ -5,4 +5,4 @@
     NETRC: ''
 
   roles:
-    - role: bodsch.monitoring-plugins
+    - role: ansible-monitoring-plugins

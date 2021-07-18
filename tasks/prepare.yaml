@@ -1,0 +1,86 @@
+---
+
+- name: include OS specific configuration
+  include_vars: "{{ lookup('first_found', params) }}"
+  vars:
+    params:
+      paths:
+        - "vars"
+      files:
+        # eg. debian-10 / ubuntu-20.04 / centos-8 / oraclelinux-8
+        - "{{ ansible_distribution | lower }}-{{ ansible_distribution_major_version }}.yaml"
+        # eg. debian / ubuntu / centos / oraclelinux
+        - "{{ ansible_distribution | lower }}.yaml"
+        # eg. redhat / debian
+        - "{{ ansible_os_family | lower }}.yaml"
+        - default.yaml
+      skip: true
+
+- block:
+    - name: make sure dnf is installed (only redhat based <8)
+      package:
+        name:
+          - dnf
+          - iproute
+        state: present
+
+    - name: get latest system information
+      setup:
+  when:
+    - ansible_os_family | lower == 'redhat'
+    - ansible_distribution | lower == 'centos'
+    - ansible_distribution_version | int < 8
+
+# redhat based
+#
+- block:
+    #
+    - name: import EPEL GPG key.
+      rpm_key:
+        key: https://archive.fedoraproject.org/pub/epel/RPM-GPG-KEY-EPEL-{{ ansible_distribution_major_version }}
+        state: present
+
+    - name: install EPEL repository
+      yum_repository:
+        name: epel
+        state: present
+        description: Extra Packages for Enterprise Linux {{ ansible_distribution_major_version }} - $basearch
+        baseurl: http://download.fedoraproject.org/pub/epel/{{ ansible_distribution_major_version }}/$basearch
+        gpgkey: file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-{{ ansible_distribution_major_version }}
+        metalink: https://mirrors.fedoraproject.org/metalink?repo=epel-{{ ansible_distribution_major_version }}&arch=$basearch&infra=$infra&content=$contentdir
+        failovermethod: priority
+        gpgcheck: 1
+        enabled: 1
+  when:
+    - ansible_os_family | lower == 'redhat'
+
+- name: update package cache
+  package:
+    update_cache: true
+
+- name: define OS related monitoring plugins (archlinux)
+  set_fact:
+    monitoring_plugins: "{{ monitoring_plugins_arch + monitoring_plugins | default([]) }}"
+  when:
+    - ansible_os_family | lower == 'archlinux'
+
+- name: define OS related monitoring plugins (debian)
+  set_fact:
+    monitoring_plugins: "{{ monitoring_plugins_debian + monitoring_plugins | default([]) }}"
+  when:
+    - ansible_os_family | lower == 'debian'
+
+- name: define OS related monitoring plugins (redhat)
+  set_fact:
+    monitoring_plugins: "{{ monitoring_plugins_redhat + monitoring_plugins | default([]) }}"
+  when:
+    - ansible_os_family | lower == 'redhat'
+
+- name: remove blacklisted plugins
+  set_fact:
+    monitoring_plugins: "{{ monitoring_plugins | difference(monitoring_plugins_blacklist) }}"
+  when:
+    - monitoring_plugins_blacklist is defined
+    - monitoring_plugins_blacklist | count != 0
+
+...
