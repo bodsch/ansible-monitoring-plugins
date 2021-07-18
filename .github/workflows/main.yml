@@ -64,6 +64,7 @@ jobs:
           - ubuntu:20.04
           - centos:7
           - centos:8
+          - oraclelinux:7
           - oraclelinux:8
         python-version:
           - '3.8'

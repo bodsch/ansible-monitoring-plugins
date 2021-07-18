@@ -1,11 +1,26 @@
 ---
+
+monitoring_plugins: []
+
+monitoring_plugins_blacklist: []
+
+monitoring_plugins_extra:
+  - check_diskstat.sh
+  - check_hostname
+  - check_mem
+  - check_required_reboot.sh
+  - check_uptime.sh
+  - restart_service
+
+monitoring_plugins_download: []
+
 monitoring_plugins_arch:
   - monitoring-plugins
 
 monitoring_plugins_debian:
-  - monitoring-plugins-standard
   - monitoring-plugins-basic
   - monitoring-plugins-common
+  - monitoring-plugins-standard
 
 monitoring_plugins_redhat:
   - nagios-plugins
@@ -32,16 +47,4 @@ monitoring_plugins_redhat:
   - nagios-plugins-uptime
   - nagios-plugins-users
 
-monitoring_plugins: []
-
-monitoring_plugins_blacklist: []
-
-monitoring_plugins_extra:
-  - restart_service
-  - check_hostname
-  - check_diskstat.sh
-  - check_uptime.sh
-  - check_mem
-  - check_required_reboot.sh
-
-monitoring_plugins_download: []
+...
