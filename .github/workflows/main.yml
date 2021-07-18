@@ -101,6 +101,7 @@ jobs:
           DISTRIBUTION: ${{ matrix.image }}
 
   publish:
+    if: github.ref == 'refs/heads/master'
     needs:
       - test
     runs-on: ubuntu-18.04
