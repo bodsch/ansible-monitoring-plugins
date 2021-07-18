@@ -91,9 +91,6 @@ jobs:
 
       - name: test with tox
         run: |
-          cd ../
-          mv ansible-monitoring-plugins bodsch.monitoring-plugins
-          cd bodsch.monitoring-plugins
           tox -e py$(printf "${{ matrix.python-version }}" | tr -d '.')-ansible$(printf "${{ matrix.ansible-version }}" | tr -d '.') -- molecule test
         env:
           PY_COLORS: '1'
