@@ -16,6 +16,15 @@
         - default.yaml
       skip: true
 
+- name: detect installed python version
+  set_fact:
+    use_python_version: "{{ ansible_python.version.major }}"
+
+- name: detect python binary
+  stat:
+    path: "/usr/bin/python{{ use_python_version }}"
+  register: python_binary
+
 - block:
     - name: make sure dnf is installed (only redhat based <8)
       package:

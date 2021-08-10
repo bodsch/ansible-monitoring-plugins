@@ -6,4 +6,8 @@
 
 - include_tasks: extra_plugins.yaml
 
+- include_tasks: fix_python.yaml
+  when:
+    - monitoring_plugins_fix_python_version
+
 ...
