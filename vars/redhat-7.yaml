@@ -1,0 +1,8 @@
+---
+
+monitoring_plugins_dependecies:
+  - iproute
+
+monitoring_plugins_directory: /usr/lib64/nagios/plugins
+
+...
