@@ -33,14 +33,14 @@ Tested on
 
 ### archlinux based
 
-```
+```yaml
 monitoring_plugins_arch:
   - monitoring-plugins
 ```
 
 ### debian based
 
-```
+```yaml
 monitoring_plugins_debian:
   - monitoring-plugins-standard
   - monitoring-plugins-basic
@@ -49,7 +49,7 @@ monitoring_plugins_debian:
 
 ### redhat based
 
-```
+```yaml
 monitoring_plugins_redhat:
   - nagios-plugins
   - nagios-plugins-disk
@@ -82,7 +82,7 @@ monitoring_plugins_redhat:
 
 If necessary, some of the plugins can be removed from the previously defined list:
 
-```
+```yaml
 monitoring_plugins_blacklist:
   - nagios-plugins-mysql
 ```
@@ -92,7 +92,7 @@ monitoring_plugins_blacklist:
 This role provides some small monitoring plugins.
 These are located in the [files](./files) directory:
 
-```
+```yaml
 monitoring_plugins_extra:
   - restart_service
   - check_hostname
@@ -106,7 +106,7 @@ monitoring_plugins_extra:
 
 To install external plugins from other git repositories, you can use `monitoring_plugins_download`:
 
-```
+```yaml
 monitoring_plugins_download:
   - url: 'https://gitlab.com/coremedia-as-code/monitoring/monitoring-plugins/raw/master/icinga2/check_coremedia_licenses.py'
     dest: 'check_coremedia_licenses.py'

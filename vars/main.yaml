@@ -1,5 +1,7 @@
 ---
 
+monitoring_plugins_dependecies: []
+
 monitoring_plugins_directory: ""
 
 ...

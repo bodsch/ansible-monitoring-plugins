@@ -1,5 +1,8 @@
 ---
 
+monitoring_plugins_dependecies:
+  - python3-apt
+
 monitoring_plugins_directory: /usr/lib/nagios/plugins
 
 ...

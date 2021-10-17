@@ -2,7 +2,7 @@
 
 monitoring_plugins: []
 
-monitoring_plugins_fix_python_version: true
+monitoring_plugins_fix_python_version: false
 
 monitoring_plugins_blacklist: []
 

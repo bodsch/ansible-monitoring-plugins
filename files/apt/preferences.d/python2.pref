@@ -1,0 +1,27 @@
+Package: libpython2-stdlib
+Pin: release *
+Pin-Priority: -1
+
+Package: libpython2.7-minimal
+Pin: release *
+Pin-Priority: -1
+
+Package: libpython2.7-stdlib
+Pin: release *
+Pin-Priority: -1
+
+Package: python2
+Pin: release *
+Pin-Priority: -1
+
+Package: python2-minimal
+Pin: release *
+Pin-Priority: -1
+
+Package: python2.7
+Pin: release *
+Pin-Priority: -1
+
+Package: python2.7-minimal
+Pin: release *
+Pin-Priority: -1

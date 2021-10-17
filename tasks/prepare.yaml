@@ -7,7 +7,7 @@
       paths:
         - "vars"
       files:
-        # eg. debian-10 / ubuntu-20.04 / centos-8 / oraclelinux-8
+        # eg. debian-10 / ubuntu-20 / centos-8 / oraclelinux-8
         - "{{ ansible_distribution | lower }}-{{ ansible_distribution_major_version }}.yaml"
         # eg. debian / ubuntu / centos / oraclelinux
         - "{{ ansible_distribution | lower }}.yaml"
@@ -16,29 +16,43 @@
         - default.yaml
       skip: true
 
-- name: detect installed python version
-  set_fact:
-    use_python_version: "{{ ansible_python.version.major }}"
+- block:
+    - name: detect installed python version
+      set_fact:
+        use_python_version: "{{ ansible_python.version.major }}"
 
-- name: detect python binary
-  stat:
-    path: "/usr/bin/python{{ use_python_version }}"
-  register: python_binary
+    - name: detect python binary
+      stat:
+        path: "/usr/bin/python{{ use_python_version }}"
+      register: python_binary
+  when:
+    - monitoring_plugins_fix_python_version
+
 
 - block:
-    - name: make sure dnf is installed (only redhat based <8)
+    - name: block installation of python2
+      copy:
+        src: apt/preferences.d/python2.pref
+        dest: /etc/apt/preferences.d/python2.pref
+        mode: 0644
+
+    - name: make sure python3-apt is installed (only debian based)
       package:
         name:
-          - dnf
-          - iproute
+          - python3-apt
         state: present
 
-    - name: get latest system information
-      setup:
+    - name: clean apt cache
+      command: apt-get clean
+      args:
+        warn: false
   when:
-    - ansible_os_family | lower == 'redhat'
-    - ansible_distribution | lower == 'centos'
-    - ansible_distribution_version | int < 8
+    - ansible_os_family | lower == 'debian'
+
+- name: install dependencies
+  package:
+    name: "{{ monitoring_plugins_dependecies }}"
+    state: present
 
 # redhat based
 #
@@ -91,5 +105,8 @@
   when:
     - monitoring_plugins_blacklist is defined
     - monitoring_plugins_blacklist | count != 0
+
+- name: get latest system information
+  setup:
 
 ...
