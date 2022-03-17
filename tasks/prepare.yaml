@@ -56,6 +56,9 @@
   package:
     name: "{{ monitoring_plugins_dependecies }}"
     state: present
+  when:
+    - monitoring_plugins_dependecies is defined
+    - monitoring_plugins_dependecies | count > 0
 
 # redhat based
 #
