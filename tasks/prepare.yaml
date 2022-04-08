@@ -28,7 +28,6 @@
   when:
     - monitoring_plugins_fix_python_version
 
-
 - block:
     - name: block installation of python2
       copy:

@@ -23,8 +23,8 @@ not known
 
 * ArchLinux
 * Debian based
-    - Debian 9 / 10 / 11
-    - Ubuntu 18.04 / 20.04
+    - Debian 10 / 11
+    - Ubuntu 20.04
 * RedHat based
     - Alma Linux 8
     - Rocky Linux 8
