@@ -23,18 +23,16 @@ platforms:
 
 provisioner:
   name: ansible
-  # ansible_args:
-  #   - --diff
-  #   # - -vv
+  ansible_args:
+    - --diff
+    # - -vv
   config_options:
     defaults:
       deprecation_warnings: True
       stdout_callback: yaml
-      callbacks_enabled: profile_tasks
 
 scenario:
   test_sequence:
-    - lint
     - destroy
     - dependency
     - syntax
@@ -46,7 +44,3 @@ scenario:
 
 verifier:
   name: testinfra
-#   options:
-#     #v: True
-#     #sudo: True
-#     debug: True

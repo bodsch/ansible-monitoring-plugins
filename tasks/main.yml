@@ -1,12 +1,16 @@
 ---
 
-- include_tasks: prepare.yaml
+- name: prepare
+  include_tasks: prepare.yaml
 
-- include_tasks: install.yaml
+- name: install
+  include_tasks: install.yaml
 
-- include_tasks: extra_plugins.yaml
+- name: extra plugins
+  include_tasks: extra_plugins.yaml
 
-- include_tasks: fix_apt.yaml
+- name: fix apt
+  include_tasks: fix_apt.yaml
 #  when:
 #    - monitoring_plugins_fix_python_version
 
