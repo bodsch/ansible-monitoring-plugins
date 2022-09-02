@@ -20,7 +20,7 @@ then
 
   PACMAN=$(command -v pacman)
 
-  if [ -z ${PACMAN} ]
+  if [ -z "${PACMAN}" ]
   then
     echo "no 'pacman' command found."
     exit ${E_CRITICAL}
@@ -55,7 +55,7 @@ then
   for pkg in ${list}
   do
     echo -n "  "
-    echo ${pkg} | sed -e 's#.*/##g' -e 's%(.*).pkg.*$%1%'
+    echo "${pkg}" | sed -e 's#.*/##g' -e 's%(.*).pkg.*$%1%'
   done
 
 else

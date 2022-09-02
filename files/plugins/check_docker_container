@@ -6,26 +6,48 @@
 #  - usermod -a -G docker nagios
 
 E_OK=0
-E_WARNING=1
+# E_WARNING=1
 E_CRITICAL=2
-E_UNKNOWN=3
+# E_UNKNOWN=3
 
 must_running=0
 
-while getopts "r:w:c" opt
+while [ -n "$1" ]
 do
-  case ${opt} in
-    r)
-      must_running=${OPTARG}
+  case $1 in
+    -r|--running)
+      shift
+      must_running="${1}"
       ;;
-    c)
-      warning=${OPTARG}
+    -w|--warning)
+      shift
+      warning="${1}"
       ;;
-    w)
-      critical=${OPTARG}
+    -c|--critical)
+      shift
+      critical="${1}"
+      ;;
+    *)
+      unknown "invalid option: ${1}"
       ;;
   esac
+  shift
 done
+
+# while getopts "r:w:c" opt
+# do
+#   case ${opt} in
+#     r)
+#       must_running=${OPTARG}
+#       ;;
+#     c)
+#       warning=${OPTARG}
+#       ;;
+#     w)
+#       critical=${OPTARG}
+#       ;;
+#   esac
+# done
 
 check_dependency() {
 

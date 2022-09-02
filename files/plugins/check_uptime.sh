@@ -1,4 +1,4 @@
-  #!/usr/bin/env bash
+#!/usr/bin/env bash
 #
 #
 # USAGE :
@@ -23,20 +23,28 @@ usage() {
   echo ""
 }
 
-if [ "$1" == "--help" ]
-then
-  usage
-  exit "${E_UNKNOWN}"
-fi
-
-while getopts ":w:c:" options
+while [ -n "$1" ]
 do
-  case $options in
-    w)  warning=${OPTARG} ;;
-    c)  critical=${OPTARG} ;;
-    *)  usage ; exit "${E_UNKNOWN}" ;;
+  case $1 in
+    -h|--help)
+      usage
+      exit "${E_UNKNOWN}"
+      ;;
+    -w|--warning)
+      shift
+      warning=${1}
+      ;;
+    -c|--critical)
+      shift
+      critical=${1}
+      ;;
+    *)
+      unknown "invalid option: ${1}"
+      ;;
   esac
+  shift
 done
+
 
 if [ "$(uptime | grep -c day)" -eq 0 ]
 then
@@ -45,11 +53,11 @@ else
   sortie=$(uptime | awk '{print $3}')
 fi
 
-if [ "$(echo ${sortie} | grep '^[[:digit:]]*$')" ]
+if [ "$(echo "${sortie}" | grep '^[[:digit:]]*$')" ]
 then
 
-  [ -z "${warning}" ]  && WARNING=$((${sortie}+1))  || WARNING=${warning}
-  [ -z "${critical}" ] && CRITICAL=$((${sortie}+2)) || CRITICAL=${critical}
+  [ -z "${warning}" ]  && WARNING=$(("${sortie}"+1))  || WARNING=${warning}
+  [ -z "${critical}" ] && CRITICAL=$(("${sortie}"+2)) || CRITICAL=${critical}
 
   if [ "${sortie}" -ge "${CRITICAL}" ]
   then
@@ -69,6 +77,6 @@ then
   fi
 fi
 
-echo ${sortie} | tr "\n" "\t"
+echo "${sortie}" | tr "\n" "\t"
 exit "${E_UNKNOWN}"
 

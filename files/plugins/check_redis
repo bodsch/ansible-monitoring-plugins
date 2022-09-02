@@ -43,24 +43,26 @@ check_dependency() {
   if [ -z "${NC}" ]
   then
     echo "no 'nc' found. please install openbsd-netcat first"
-    exit ${E_CRITICAL}
+    exit "${E_CRITICAL}"
   fi
 }
 
 check_redis() {
-  host=${redis_host:=127.0.0.1}
-  port=${redis_port:=6379}
+  #host=${redis_host:=127.0.0.1}
+  #port=${redis_port:=6379}
 
-  output=$(echo 'info' | nc -w1 $redis_host $redis_port)
-  if [[ $? -ne 0 ]] || [[ -z  $output ]]; then
+  output=$(echo 'info' | nc -w1 "${redis_host}" "${redis_port}")
+  if [[ $? -ne 0 ]] || [[ -z  $output ]]
+  then
     echo "CRITICAL - could not connect to redis on ${redis_host}:${redis_port}"
     exit 2
   fi
 
-  used_memory_human=$(echo "$output" | awk -F ":" '$1 == "used_memory_human" {print $2}'|sed -e 's/\r//')
+  used_memory_human=$(echo "$output" | awk -F ":" '$1 == "used_memory_human" {print $2}' | sed -e 's/\r//')
   instantaneous_ops_per_sec=$(echo "$output" | awk -F : '$1 == "instantaneous_ops_per_sec" {print $2}')
 
-  if [[ -z $used_memory_human ]] || [[ -z  $instantaneous_ops_per_sec ]]; then
+  if [[ -z ${used_memory_human} ]] || [[ -z ${instantaneous_ops_per_sec} ]]
+  then
     echo "CRITICAL - could not fetch redis stats on ${redis_host}:${redis_port}"
     exit 2
   fi

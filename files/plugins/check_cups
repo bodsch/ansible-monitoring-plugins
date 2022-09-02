@@ -4,57 +4,92 @@
 #   June 2019 Bodo Schulz <bodo@boone-schulz.de>
 # This software is GPL
 
+# exit codes
+E_OK=0
+E_WARNING=1
+E_CRITICAL=2
+E_UNKNOWN=3
+
 warn=
 critical=
-server=
+# server=
 details=
+
+LANG=en_UK
 
 thishelp () {
   echo "Usage check_cups -w <warn> -c <critical> "
   exit 0
 }
 
-while getopts w:c:h:v opt
+while [ -n "$1" ]
 do
-  case $opt in
-  w)  warn=$OPTARG
-       ;;
-  c)  critical=$OPTARG
-    ;;
-  h)  host=$OPTARG
-    ;;
-  v)      thishelp
-    ;;
-   esac
+  case $1 in
+    -h|--help)
+      thishelp
+      exit "${E_UNKNOWN}"
+      ;;
+    -H|--host)
+      shift
+      host="${1}"
+      ;;
+    -w|--warning)
+      shift
+      warn="${1}"
+      ;;
+    -c|--critical)
+      shift
+      critical="${1}"
+      ;;
+    *)
+      unknown "invalid option: ${1}"
+      ;;
+  esac
+  shift
 done
-shift $((OPTIND-1))
+
+# while getopts w:c:h:v opt
+# do
+#   case $opt in
+#   w)  warn=$OPTARG
+#        ;;
+#   c)  critical=$OPTARG
+#     ;;
+#   h)  host=$OPTARG
+#     ;;
+#   v)      thishelp
+#     ;;
+#    esac
+# done
+# shift $((OPTIND-1))
 
 [[ $warn -gt $critical ]] && thishelp
 
 # -r  Show whether the CUPS server is running
 # -s  Show a status summary
-# -s  Show a status summary
-if $(lpstat -r -s -h $host > /dev/null 2>&1)
+
+running_service="$(lpstat -r -s)"
+
+if [[ $running_service =~ not\ running ]]
 then
-
-  QUEUE_LENGTH=$(lpstat | wc -l)
-  PRINTERS=$(lpstat -p | grep ^printer | awk '{print $2}')
-
-  for printer in $PRINTERS
-  do
-    details_printer=$printer
-    details_queue=$(lpstat $printer | wc -l)
-    details="${details} [${details_printer} ${details_queue}]"
-  done
-
-  echo "Cups server on ${host} running. (${QUEUE_LENGTH} jobs queued.${details})"
-
-  [ $QUEUE_LENGTH -lt $warn ] && exit 0
-  [ $QUEUE_LENGTH -lt $critical ] && exit 1
-
-  exit 2
-
-else
   echo "cups is not running"
-  exit 2
+  exit ${E_CRITICAL}
 fi
+
+
+QUEUE_LENGTH=$(lpstat | wc -l)
+PRINTERS=$(lpstat -p | grep ^printer | awk '{print $2}')
+
+for printer in $PRINTERS
+do
+  details_printer="${printer}"
+  details_queue=$(lpstat "${printer}" | wc -l)
+  details="${details} [${details_printer} ${details_queue}]"
+done
+
+echo "Cups server on ${host} running. (${QUEUE_LENGTH} jobs queued.${details})"
+
+[ "${QUEUE_LENGTH}" -lt "${warn}" ] && exit ${E_OK}
+[ "${QUEUE_LENGTH}" -lt "${critical}" ] && exit ${E_WARNING}
+
+exit ${E_CRITICAL}
