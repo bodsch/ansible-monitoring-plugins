@@ -4,6 +4,12 @@
   package:
     name: "{{ monitoring_plugins }}"
     state: present
+  when:
+    - monitoring_plugins | default([]) | count > 0
+
+- name: d
+  debug:
+    msg: "{{ ansible_os_family | lower }}"
 
 - block:
     - name: find OS specific plugins directory
@@ -31,7 +37,7 @@
         dest: /usr/lib/monitoring-plugins
         state: link
   when:
-    - ansible_os_family | lower != 'archlinux'
+    - not ansible_os_family | lower in ['archlinux', 'artix linux']
 
 - name: re-read setup
   setup:

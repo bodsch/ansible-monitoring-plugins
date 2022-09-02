@@ -8,12 +8,14 @@
     - role: ansible-monitoring-plugins
 
   pre_tasks:
-    - debug:
+    - name: python version
+      debug:
         msg:
           - "python version       : {{ ansible_python.version.major }}.{{ ansible_python.version.minor }}"
 
   post_tasks:
-    - debug:
+    - name: python version
+      debug:
         msg:
           - "python version       : {{ ansible_python.version.major }}.{{ ansible_python.version.minor }}"
 
