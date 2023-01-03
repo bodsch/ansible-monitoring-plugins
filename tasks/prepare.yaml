@@ -1,7 +1,7 @@
 ---
 
 - name: include OS specific configuration
-  include_vars: "{{ lookup('first_found', params) }}"
+  ansible.builtin.include_vars: "{{ lookup('first_found', params) }}"
   vars:
     params:
       paths:
@@ -20,43 +20,46 @@
         - default.yaml
       skip: true
 
-- block:
+- name: python version
+  when:
+    - monitoring_plugins_fix_python_version
+  block:
     - name: detect installed python version
-      set_fact:
+      ansible.builtin.set_fact:
         use_python_version: "{{ ansible_python.version.major }}"
 
     - name: detect python binary
-      stat:
+      ansible.builtin.stat:
         path: "/usr/bin/python{{ use_python_version }}"
       register: python_binary
-  when:
-    - monitoring_plugins_fix_python_version
 
-- block:
+- name: debian based
+  when:
+    - ansible_os_family | lower == 'debian'
+  block:
     - name: block installation of python2
-      copy:
+      ansible.builtin.copy:
         src: apt/preferences.d/python2.pref
         dest: /etc/apt/preferences.d/python2.pref
         mode: 0644
 
     - name: make sure python3-apt is installed (only debian based)
-      package:
+      ansible.builtin.package:
         name:
           - python3-apt
         state: present
 
     - name: clean apt cache
-      command: apt-get clean
+      ansible.builtin.command: apt-get clean
       args:
         warn: false
       register: apt_clean
       changed_when: apt_clean.rc != 0
       failed_when: apt_clean.rc != 0
-  when:
-    - ansible_os_family | lower == 'debian'
+
 
 - name: install dependencies
-  package:
+  ansible.builtin.package:
     name: "{{ monitoring_plugins_dependecies }}"
     state: present
   when:
@@ -65,15 +68,18 @@
 
 # redhat based
 #
-- block:
+- name: redhat based
+  when:
+    - ansible_os_family | lower == 'redhat'
+  block:
     #
     - name: import EPEL GPG key.
-      rpm_key:
+      ansible.builtin.rpm_key:
         key: https://archive.fedoraproject.org/pub/epel/RPM-GPG-KEY-EPEL-{{ ansible_distribution_major_version }}
         state: present
 
     - name: install EPEL repository
-      yum_repository:
+      ansible.builtin.yum_repository:
         name: epel
         state: present
         description: Extra Packages for Enterprise Linux {{ ansible_distribution_major_version }} - $basearch
@@ -83,39 +89,37 @@
         failovermethod: priority
         gpgcheck: 1
         enabled: 1
-  when:
-    - ansible_os_family | lower == 'redhat'
 
 - name: update package cache
-  package:
+  ansible.builtin.package:
     update_cache: true
 
 - name: define OS related monitoring plugins (archlinux)
-  set_fact:
+  ansible.builtin.set_fact:
     monitoring_plugins: "{{ monitoring_plugins_arch + monitoring_plugins | default([]) }}"
   when:
     - ansible_os_family | lower in ['archlinux', 'artix linux']
 
 - name: define OS related monitoring plugins (debian)
-  set_fact:
+  ansible.builtin.set_fact:
     monitoring_plugins: "{{ monitoring_plugins_debian + monitoring_plugins | default([]) }}"
   when:
     - ansible_os_family | lower == 'debian'
 
 - name: define OS related monitoring plugins (redhat)
-  set_fact:
+  ansible.builtin.set_fact:
     monitoring_plugins: "{{ monitoring_plugins_redhat + monitoring_plugins | default([]) }}"
   when:
     - ansible_os_family | lower == 'redhat'
 
 - name: remove blacklisted plugins
-  set_fact:
+  ansible.builtin.set_fact:
     monitoring_plugins: "{{ monitoring_plugins | difference(monitoring_plugins_blacklist) }}"
   when:
     - monitoring_plugins_blacklist is defined
     - monitoring_plugins_blacklist | count != 0
 
-- name: get latest system information
-  setup:
+#- name: get latest system information
+#  ansible.builtin.setup:
 
 ...

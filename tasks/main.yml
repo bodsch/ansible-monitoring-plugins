@@ -1,16 +1,16 @@
 ---
 
 - name: prepare
-  include_tasks: prepare.yaml
+  ansible.builtin.include_tasks: prepare.yaml
 
 - name: install
-  include_tasks: install.yaml
+  ansible.builtin.include_tasks: install.yaml
 
 - name: extra plugins
-  include_tasks: extra_plugins.yaml
+  ansible.builtin.include_tasks: extra_plugins.yaml
 
 - name: fix apt
-  include_tasks: fix_apt.yaml
+  ansible.builtin.include_tasks: fix_apt.yaml
 #  when:
 #    - monitoring_plugins_fix_python_version
 

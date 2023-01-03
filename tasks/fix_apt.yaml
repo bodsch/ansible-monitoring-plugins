@@ -1,7 +1,7 @@
 ---
 
 - name: remove python2.pref
-  file:
+  ansible.builtin.file:
     path: /etc/apt/preferences.d/python2.pref
     state: absent
   when:

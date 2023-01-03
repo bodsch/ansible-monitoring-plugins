@@ -6,13 +6,15 @@
 installs an set of `monitoring-` or `nagios-plugins` on various systems.
 
 
-[![GitHub Workflow Status](https://img.shields.io/github/workflow/status/bodsch/ansible-monitoring-plugins/CI)][ci]
+[![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/bodsch/ansible-monitoring-plugins/main.yml?branch=main)][ci]
 [![GitHub issues](https://img.shields.io/github/issues/bodsch/ansible-monitoring-plugins)][issues]
 [![GitHub release (latest by date)](https://img.shields.io/github/v/release/bodsch/ansible-monitoring-plugins)][releases]
+[![Ansible Quality Score](https://img.shields.io/ansible/quality/50067?label=role%20quality)][quality]
 
 [ci]: https://github.com/bodsch/ansible-monitoring-plugins/actions
 [issues]: https://github.com/bodsch/ansible-monitoring-plugins/issues?q=is%3Aopen+is%3Aissue
 [releases]: https://github.com/bodsch/ansible-monitoring-plugins/releases
+[quality]: https://galaxy.ansible.com/bodsch/monitoring_plugins
 
 
 ## Requirements & Dependencies

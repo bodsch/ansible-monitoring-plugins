@@ -1,19 +1,18 @@
 ---
 
 - name: install monitoring plugins
-  package:
+  ansible.builtin.package:
     name: "{{ monitoring_plugins }}"
     state: present
   when:
     - monitoring_plugins | default([]) | count > 0
 
-- name: d
-  debug:
-    msg: "{{ ansible_os_family | lower }}"
-
-- block:
+- name: OS specific plugins directory
+  when:
+    - not ansible_os_family | lower in ['archlinux', 'artix linux']
+  block:
     - name: find OS specific plugins directory
-      find:
+      ansible.builtin.find:
         paths: "/usr/lib/nagios,/usr/lib64/nagios"
         file_type: directory
         patterns:
@@ -22,7 +21,7 @@
       register: found_directory
 
     - name: define monitoring_plugins_directory
-      set_fact:
+      ansible.builtin.set_fact:
         monitoring_plugins_directory: "{{
             found_directory.files |
             sort(attribute='path', reverse=True) |
@@ -32,14 +31,12 @@
         - found_directory.files | count > 0
 
     - name: create generic link for {{ monitoring_plugins_directory }} to /usr/lib/monitoring-plugins
-      file:
+      ansible.builtin.file:
         src: "{{ monitoring_plugins_directory }}"
         dest: /usr/lib/monitoring-plugins
         state: link
-  when:
-    - not ansible_os_family | lower in ['archlinux', 'artix linux']
 
 - name: re-read setup
-  setup:
+  ansible.builtin.setup:
 
 ...

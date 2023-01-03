@@ -1,7 +1,7 @@
 ---
 
 - name: copy extra check plugins
-  copy:
+  ansible.builtin.copy:
     src: "plugins/{{ item }}"
     dest: "{{ monitoring_plugins_directory }}"
     mode: 0755
@@ -11,7 +11,7 @@
     label: "{{ item }}"
 
 - name: download extra plugins
-  get_url:
+  ansible.builtin.get_url:
     url: "{{ item.url }}"
     dest: "{{ monitoring_plugins_directory }}/{{ item.dest }}"
     mode: 0755
