@@ -1,5 +1,3 @@
-
-
 # Ansible Role:  `monitoring-plugins`
 
 
@@ -81,7 +79,8 @@ monitoring_plugins_redhat:
 
 ### remove monitoring plugins from list
 
-`nagios-plugins-mysql` and MariaDB from epel are not compatible in CentoOS 8. ([read this issue](https://github.com/Icinga/icinga2/issues/7927))
+`nagios-plugins-mysql` and MariaDB from epel are not compatible in CentoOS 8. 
+([read this issue](https://github.com/Icinga/icinga2/issues/7927))
 
 If necessary, some of the plugins can be removed from the previously defined list:
 

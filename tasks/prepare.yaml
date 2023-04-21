@@ -49,14 +49,20 @@
           - python3-apt
         state: present
 
-    - name: clean apt cache
-      ansible.builtin.command: apt-get clean
-      args:
-        warn: false
-      register: apt_clean
-      changed_when: apt_clean.rc != 0
-      failed_when: apt_clean.rc != 0
+    - name: update apt cache
+      block:
+        - name: clean apt cache  # noqa command-instead-of-module no-handler
+          ansible.builtin.command: |
+            apt-get clean
+          register: apt_clean
+          changed_when: apt_clean.rc != 0
+          failed_when: apt_clean.rc != 0
+          when: "ansible_version.full is version_compare('2.13', '<')"
 
+        - name: clean apt cache  # noqa args[module]
+          ansible.builtin.apt:
+            clean: true
+          when: "ansible_version.full is version_compare('2.13', '>=')"
 
 - name: install dependencies
   ansible.builtin.package:
