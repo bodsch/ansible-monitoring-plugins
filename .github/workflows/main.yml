@@ -25,9 +25,7 @@ jobs:
           - archlinux:latest
           - artixlinux:latest
         ansible-version:
-          - '5.1'
-          - '6.1'
-          - '7.0'
+          - '6.7'
         scenario:
           - default
 
@@ -71,9 +69,7 @@ jobs:
           - ubuntu:20.04
           - ubuntu:22.04
         ansible-version:
-          - '5.1'
-          - '6.1'
-          - '7.0'
+          - '6.7'
         scenario:
           - default
 
@@ -120,9 +116,7 @@ jobs:
           - rockylinux:9
           - almalinux:9
         ansible-version:
-          - '5.1'
-          - '6.1'
-          - '7.0'
+          - '6.7'
         scenario:
           - default
 
