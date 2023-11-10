@@ -25,10 +25,9 @@ not known
 * Debian based
     - Debian 10 / 11
     - Ubuntu 20.04
-* RedHat based
-    - Alma Linux 8
-    - Rocky Linux 8
-    - OracleLinux 8
+
+> **RedHat-based systems are no longer officially supported! May work, but does not have to.**
+
 
 ## configuration
 
@@ -118,3 +117,27 @@ monitoring_plugins_download:
     dest: 'check_arch_updates'
     checksum: 'sha256:7afa562aaedb63f6e93cfebfa4a9a3ea49fecda62d4dae3d8ff919b76c117c41'
 ```
+
+---
+
+## Contribution
+
+Please read [Contribution](CONTRIBUTING.md)
+
+## Development,  Branches (Git Tags)
+
+The `master` Branch is my *Working Horse* includes the "latest, hot shit" and can be complete broken!
+
+If you want to use something stable, please use a [Tagged Version](https://github.com/bodsch/ansible-monitoring-plugins/tags)!
+
+---
+
+## Author and License
+
+- Bodo Schulz
+
+## License
+
+[Apache](LICENSE)
+
+**FREE SOFTWARE, HELL YEAH!**
